@@ -633,8 +633,175 @@ set.has('item 2');
 // true
 
 set.delete('item 1');             
+
 // Set ['item 2','item 3', 1] 
                    
 set.size();                        
 // 2
+```
+## 0perador exponencial
+
+```javascript
+const data = 3 ** 4;
+console.log(data);
+// 81
+```
+## array includes
+
+```javascript
+let array = [1,3,5,7,9,2,4,6,8,9,3];
+console.log(array.includes(5));
+// true
+
+let personas = ['Luis','Juan','Pedro','Maria'];
+console.log(personas.includes('Pedro'));
+// true
+```
+## Object.entries
+
+Transforma un Objeto con llave valor a una array de arrays
+### Ejemplo:
+
+```javascript
+const countries = {
+    MX: "mexico",
+    CO: "colombia",
+    CL: "chile",
+    PE: "peru"
+};
+
+console.log(Object.entries(countries));
+// [
+//     [ 'MX', 'mexico' ],
+//     [ 'CO', 'colombia' ],
+//     [ 'CL', 'chile' ],
+//     [ 'PE', 'peru' ]
+//   ]
+```
+
+## Object.values
+Regreza un array con solo los valores del objeto
+```javascript
+const countries = {
+    MX: "mexico",
+    CO: "colombia",
+    CL: "chile",
+    PE: "peru"
+};
+
+console.log(Object.values(countries));
+
+// [ 'mexico', 'colombia', 'chile', 'peru' ]
+```
+
+## padStart y padEnd
+
+padStart(#pos, "#") y padEnd(#pos, "#") 
+
+Agrega caracteres o simbolos al principio o al final del string el primer parametro indica el numero de caracteres total contando el string, y el segundo valor el caracter que se quiere agregar Ejemplo:
+
+```javascript
+const palabra = "hello";
+
+let left = palabra.padStart(6,"#");
+let leftRight = left.padEnd(7,"#");
+
+console.log(`${leftRight}`);
+
+//  #hello#
+```
+
+En este ejemplo el string "hello" contiene 5 caracteres, como se le quiere agregar el simbolo "#" al principio entonces el primer valor sera 6 y el segundo sera "#" separado por una coma,
+
+De la misma forma para el lado derecho, solo que cambia el primer valor a 7 ya que ahora tiene 6 caracteres porque agregamos el "#" al principio
+
+## Trailing comma
+
+El término “trailing commas o “trailing commas en inglés” se refiere a la posibilidad de agregar una coma adicional después del último elemento en una lista, array o conjunto de parámetros de función en JavaScript.
+
+Anteriormente, esta coma adicional causaba un error de sintaxis en algunos navegadores antiguos de Internet Explorer, por lo que se consideraba una mala práctica de codificación. Sin embargo, en la versión ES2017 (ES8) de JavaScript, se introdujo una nueva sintaxis que permite las “trailing commas” sin errores de sintaxis, lo que hace que sea más fácil y seguro mantener y actualizar el código.
+
+La sintaxis de “trailing commas” en JavaScript se ve así:
+```javascript
+const array = [23,45,65,78,43,12,3,56, , , , , ];
+
+console.log(array);
+console.log(array.length);
+// [ 23, 45, 65, 78, 43, 12, 3, 56, <4 empty items> ]
+//12
+```
+
+## async await
+
+### Funcion asincrona:
+Una función asincrona lo que hace es aislar todo el flujo que contiene para que no intervenga en el flujo externo de la función, o sea nuestra aplicación completa. En otras palabras simula ser un HILO el cual en otros lenguajes de programación el usar hilos podemos ejecutar varios procesos simultaneos sin detener nuestro programa.
+
+Por ejemplo: Tengo una aplicación en la que mis clientes manipulan y consultan datos continuamente y mi aplicación quiere hacer una descarga de un archivo pesado, si lo asemos sin asincronismo o sin usasr un “HILO” lo que pasará es que mientras ses descarga el archivo nuestro programa se congelara hasta que se termine de descargar el archivo. PERO si usamos funciones asincronas o HILOS lo que podremos hacer es que podremos decargar el archivo en segundo plano y nuestros clientes podran seguir usando el sistema sin problemas
+
+### async-await 
+Es una manera de trabajar de una forma mas cómoda con promesas, la palabra reservada “async” quiere decir que una función siempre devolverá una promesa. Ahora la palabra reservada “await”, solamente existe dentro de una función "async", que hace que JavaScript espere hasta que la función promesa responda para continuar con el código dentro de ésta función, pero sin pausar la ejecución del siguiente código.
+```javascript
+const fnAsync = ()=>{
+    return new Promise((resolve, reject)=>{
+        // condicional ternario
+        (true)
+        ? setTimeout(()=>resolve("async"),1500) 
+        : reject(new Error("error reject"));
+    });
+};
+
+const  asyncFunction = async ()=>{
+    const answer = await fnAsync();
+    console.log(answer);
+    console.log("Recibido con exito");
+}
+
+console.log("Before");
+asyncFunction();
+console.log("After");
+
+// Before
+// After
+// async
+// Recibido con exito
+```
+
+## regex
+### Expresión regular:
+* /(\d{4})-(\d{2})-(\d{2})/
+
+* \d{4} -> busca un string con exactamente 4 dígitos de longitud
+* luego viene un guión -
+* \d{2} -> busca un string con exactamente 2 dígitos de longitud
+* luego viene otro guión -
+* y se repite el \d{2}
+
+Entonces la expresión regular hará match con strings que tengan 4 dígitos - 2 dígitos - 2 dígitos
+### Con un formato correcto :
+
+```javascript
+const regex = /(\d{4})-(\d{2})-(\d{2})/;
+const matchers = regex.exec("2023-01-01");
+console.log(matchers);
+
+// [
+//     '2023-01-01',
+//     '2023',
+//     '01',
+//     '01',
+//     index: 0,
+//     input: '2023-01-01',
+//     groups: undefined
+//   ]
+
+```
+
+### Con un formato incorrecto :
+
+```javascript
+const regex = /(\d{4})-(\d{2})-(\d{2})/;
+const matchers = regex.exec("202-010-01");
+console.log(matchers);
+
+// null
 ```
