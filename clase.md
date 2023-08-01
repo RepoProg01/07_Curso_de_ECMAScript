@@ -409,6 +409,14 @@ En su lugar se con el nombre de su funcion y sus metodos ya mencionados
 
 Esta funcion se ejecutara asincrona, en un hilo independiente del procesador y los demas procesos continuaran normalmente, cuando se cumpla el tiempo de espera se ejecutara ese return y el resolve se mandara al metodo de la promesa .then(), si por alguna razon algun error se presentara se mandaria con el reject al .catch() 
 
+### Finally
+
+```javascript
+getDatos()
+    .then(datos =>console.log(datos))
+    .catch(err => console.log(err));
+    .finally(()=>console.log("finalizo"));
+```
 ## Usando async await
 ```javascript
 function getDatos(){
@@ -804,4 +812,403 @@ const matchers = regex.exec("202-010-01");
 console.log(matchers);
 
 // null
+```
+## Spread
+### Como se diferencia el Rest Operator del Spread Operator?
+
+* La sintaxis spread “expande” un array en sus elementos, mientras que 
+
+* la sintaxis rest recopila varios elementos y los “condensa” en un solo elemento.
+
+* Rest tiene dos aplicaciones, como Rest property (en asignación desestructurada) y como Rest parameters.
+
+* El ejemplo del profesor muestra el uso de Rest Property, es decir, una asignación desestructurada aplicada en un objeto.
+
+* Los rest parameters permiten a una función aceptar una cantidad indefinida de argumentos (aunque esto no suele ser una buena práctica).
+
+```javascript
+const user = {
+    name: "Luis",
+    apellido: "Padilla",
+    country: "Mexico"
+}
+
+const {name, ...values} = user;
+
+console.log(name);
+console.log(values);
+
+// Luis
+// { apellido: 'Padilla', country: 'Mexico' }
+
+```
+
+## Genetators con async await
+
+
+```javascript
+async function* generator(){
+    yield await Promise.resolve(1);
+    yield await Promise.resolve(2);
+    yield await Promise.resolve(3);
+}
+const gen = generator();
+gen.next().then(response => console.log(response.value));
+gen.next().then(response => console.log(response.value));
+gen.next().then(response => console.log(response.value));
+
+// 1
+// 2
+// 3
+```
+### Usando un for con un array de argumento
+
+```javascript
+async function* asyncFc(array){
+    for(let item of array){
+        yield await item;
+    }
+}
+
+const prueba = asyncFc([1,2,3]);
+
+prueba.next().then(data => console.log(data.value));
+prueba.next().then(data => console.log(data.value));
+prueba.next().then(data => console.log(data.value));
+// 1
+// 2
+// 3
+```
+
+## Flat
+
+### Flat
+El método flat de los array permite aplanar los elementos internos de un array permitiendo eliminar array internos.
+
+```javascript
+const array = [1,1,2,3,4, [1,3,5,6, [7,8,9]]];
+
+console.log(array.flat(3));
+
+// [
+//     1, 1, 2, 3, 4,
+//     1, 3, 5, 6, 7,
+//     8, 9
+// ]
+```
+Si se quiere aplanar todo el arreglo sin pasar una profundidad exacta, se puede hacer uso de Infinity.
+
+```javascript
+console.log(array.flat(Infinity));
+```
+
+## Flat-map
+Permite aplanar los elementos de un array en un nivel, pasando un función que mapeara cada elemento del nuevo array.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+console.log(numbers.flatMap(num =>num * 2)); 
+
+// [ 2, 4, 6, 8, 10, 12, 14, 16, 18 ]
+```
+Este método no se podría utilizar para array que tengan más de un nivel de profundidad. Sin embargo, se pueden combinar los métodos flat y map para tener un mismo resultado.
+```javascript
+const numbers = [1, 2, 3, 4, [5, 6, [7, 8, 9]]];
+
+numbers.flat(Infinity).map(num => num * 2)
+
+// [ 2, 4, 6, 8, 10, 12, 14, 16, 18 ]
+```
+## trim() trimStart() trimEnd()
+fsEl metodo trim() quita los espacios de izquierda y derecha a la vez
+```javascript
+//------String con espacios en la izquierda y en la derecha-----
+const string = "     hello     ";
+console.log(string);
+//      hello       //
+
+//-------------------------trimStart()--------------------------
+//----String quitando espacios en la izquierda----
+const stringLeft = string.trimStart();
+console.log(stringLeft);
+//hello       //
+
+//--------------------------trimEnd()---------------------------
+//----String quitando espacios en la derecha----
+const stringRight = string.trimEnd();
+console.log(stringRight);
+//      hello//
+
+//---------------------------trimt()------------------------------
+//----String quitando espacios en la izquierda y en la derecha----
+const stringRL = string.trim();
+console.log(stringRL);
+//hello//
+```
+
+## try catch
+
+### En este ejemplo ya que si existe la funcion hello() el try no tendra ningun problema 
+
+```javascript
+function hello(){
+    console.log("Hola como estas?");
+}
+
+try{
+    hello();
+}
+catch(error){
+    console.log(error);
+}
+
+// Hola como estas?
+```
+### En este ejemplo no existe la funcion asi que el catch entrara y mostrara el error
+
+```javascript
+try{
+    desconocida();
+}
+catch(error){
+    console.log(error);
+}
+
+// ReferenceError: hello is not defined
+//  at file:///home/ECMAScript/src/ES10/03_try_catch.js:6:5
+//  at ModuleJob.run (internal/modules/esm/module_job.js:145:37)
+//  at async Loader.import (internal/modules/esm/loader.js:182:24)
+//  at async Object.loadESM (internal/process/esm_loader.js:68:5)
+
+```
+### En este siguiente ejemplo podemos personalizar el error
+
+```javascript
+try {
+    funcion1();
+}
+catch {
+    console.log("Se ha generado un error");
+}
+
+// Se ha generado un error
+```
+##  Object.fromEntries()  y  Object.entries()
+
+### Object.fromEntries() convierte un array de arrays a un objeto
+
+```javascript
+const array = [["nombre","Luis"],["apellido", "Padilla"]];
+
+const objeto = Object.fromEntries(array);
+console.log(objeto);
+
+// { nombre: 'Luis', apellido: 'Padilla' }
+```
+
+### Object.entries() convierte un objeto a un array
+
+```javascript
+const objeto = { nombre: 'Luis', apellido: 'Padilla' };
+
+const array = Object.entries(objeto);
+console.log(array);
+
+// [ [ 'nombre', 'Luis' ], [ 'apellido', 'Padilla' ] ]
+```
+
+## Optional chaining
+
+### Es una forma de evitar errores solicitando propiedades de forma opcional utilizando el símbolo => ? , sirve cuando no estamos seguros de que los valores estén completos.
+
+### Ejemplos:
+
+### Aqui regrezara la informacion ya que si se encuentra en el objeto.
+
+```javascript
+const objeto = {
+    luis: {
+        country: "MX"
+    },
+    maria:{
+        country: "AL"
+    }
+}
+
+// console.log(objeto.luis.country);
+
+console.log(objeto.juan.country);
+```
+### Si la informacion buscada no se encuentra en el objeto mostrara un error ya que no existe dentro de ese objeto ejemplo:
+
+```javascript
+const objeto = {
+    luis: {
+        country: "MX"
+    },
+    maria:{
+        country: "AL"
+    }
+}
+
+console.log(objeto?.juan?.country);
+
+// TypeError: Cannot read properties of undefined (reading 'country')
+    at file:///home/linux/clases_platzi/07_Curso_de_ECMAScript/src/ES11/00_optional_chaining.js:12:25
+    at ModuleJob.run (node:internal/modules/esm/module_job:192:25)
+    at async DefaultModuleLoader.import (node:internal/modules/esm/loader:228:24)
+    at async loadESM (node:internal/process/esm_loader:40:7)
+    at async handleMainPromise (node:internal/modules/run_main:66:12)
+```
+### Usando optional chaining ? 
+### Aunque no se encuentre la informacion no dara error solo retornara undefined y no detendra el programa
+
+```javascript
+console.log(objeto?.juan?.country);
+// undefined
+```
+### Si se quiere un mensaje personalizado podemos hacerlo de la siguiente manera
+```javascript
+console.log(objeto?.juan?.country || "No se encontro en la base de datos");
+
+// No se encontro en la base de datos
+```
+
+## BigInt()
+### Esta funcion la utilizamos con el manejo de cifras muy grandes
+
+```javascript
+const bigNumber = 95231075692831569257842916279348;
+console.log(bigNumber);
+// 9.523107569283156e+31
+
+const bigNumber2 = 95231075692831569257842916279348n;
+console.log(bigNumber2);
+// 95231075692831569257842916279348n
+
+console.log(BigInt(bigNumber));
+// 95231075692831560462259355385856n
+```
+## nullish
+
+### Diferencia entre el operador OR y el Nullish coalescing
+El operador OR (||) evalúa un valor falsey. 
+Un valor falsy es aquel que es falso en un contexto booleano, estos son: 0, "" (string vacío), false, NaN, undefined o null.
+
+Puede que recibas una variable con un valor falsy que necesites asignarle a otra variable, que no sea null o undefined. 
+Si evalúas con el operador OR, este lo cambiará, provocando un resultado erróneo.
+
+Ejemplo:
+```javascript
+const id = 0
+
+const orId = id || "Sin id"
+const nullishId = id ?? "Sin id"
+
+console.log( orId ) //  'Sin id'
+console.log( nullishId )  // 0
+```
+
+## Promise.allSettled()
+
+### El método Promise.all(iterable) devuelve una promesa que termina correctamente cuando todas las promesas en el argumento iterable han sido concluídas con éxito, o bien rechaza la petición con el motivo pasado por la primera promesa que es rechazada
+
+```javascript
+const promise1 = new Promise((resolve, reject)=>{
+    reject("Rechazado");
+});
+
+const promise2 = new Promise((resolve, reject)=>{
+    resolve("Resuelta promesa 2");
+});
+
+const promise3 = new Promise((resolve, reject)=>{
+    resolve("Resuelta promesa 3")
+});
+
+Promise.allSettled([promise1, promise2, promise3])
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+
+// [
+//   { status: 'rejected', reason: 'Rechazado' },
+//   { status: 'fulfilled', value: 'Resuelta promesa 2' },
+//   { status: 'fulfilled', value: 'Resuelta promesa 3' }
+// ]
+```
+## globalThis
+
+```javascript
+console.log(window);  // nabegador
+console.log(global);  // node
+console.log(self)     //webworker
+console.log(globalThis)
+```
+## matchAll
+
+### matchAll de los strings devuelve un iterable con todas las coincidencias del string específico a partir de una expresión regular. El iterable contiene una propiedad denominada index con el índice del string donde la búsqueda coincide.
+
+```javascript
+const regex = /\b(Apple)+\b/g;
+
+const fruit = 'Apple, Banana, Grape, Orange, Strawberry, Pear, Watermelon';
+
+for(const match of fruit.matchAll(regex)){
+    console.log(match);
+}
+
+// [
+//   'Apple',
+//   'Apple',
+//   index: 0,
+//   input: 'Apple, Banana, Grape, Orange, Strawberry, Pear, Watermelon',
+//   groups: undefined
+// ]
+```
+## dinamic Import
+
+La expresión import() para manejar dinámicamente en JavaScript. Esto permite cargar los módulos solo cuando el usuario los necesite, lo que hace que la página web sea más rápida al descargar menos recursos.
+
+### html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinamic Import</title>
+    <style>
+        .response{
+            font-size: 20px;
+            font-weight: 700;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <button id="btn">Click</button>
+    <p class="response"></p>
+    <script type="module" src="./06_dinamic_import.js"></script>
+</body>
+</html>
+```
+### dinamic import
+```javascript
+const response = document.querySelector(".response");
+const btn = document.querySelector("#btn");
+
+btn.addEventListener("click", async ()=>{
+    const modulo = await import("./06_module.js");
+    console.log(modulo);
+    const text = modulo.moduleFn();
+    response.innerHTML = text;
+});
+
+```
+### modulo
+```javascript
+export function moduleFn(){
+    return "Respuesta del modulo";
+}
 ```
