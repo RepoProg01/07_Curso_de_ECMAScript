@@ -20,6 +20,8 @@
     "url": "https://github.com/RepoProg01/07_Curso_de_ECMAScript/issues"
   },
   "homepage": "https://github.com/RepoProg01/07_Curso_de_ECMAScript#readme",
-  
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
 }

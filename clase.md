@@ -1212,3 +1212,69 @@ export function moduleFn(){
     return "Respuesta del modulo";
 }
 ```
+## numeric separator
+
+### numeric separator sirve para separar una contidad grande con el guion bajo entre cada tres cifras por ejemplo 
+### esto solo es para una mejor visualozacion del numero y ni afecta a la salida del numero
+
+```javascript
+const value = 10_000_000_000;
+
+console.log(value);
+
+//  10000000000
+```
+## replace('','') y replaceAll('','')
+
+### .replace(): 
+Solo hace el reemplazo en la primera coincidencia con el texto indicado.
+```javascript
+const srtring = "JavaScript es un buen lenguaje de programacion";
+const replace = srtring.replace("JavaScript", "PHP");
+
+console.log(replace);
+
+// PHP es un buen lenguaje de programacion
+```
+### .replaceAll(): 
+Como su nombre lo indica, hace el reemplazo a todos las coincidenas dentro del string.
+Si quisieras reemplazar todo en un string
+```javascript
+const srtring2 = "JavaScript CSS JavaScript HTML";
+const replace2 = srtring2.replaceAll("JavaScript", "PHP");
+
+console.log(replace2);
+
+// PHP CSS PHP HTML
+```
+
+## promise any
+Promise.any va a capturar la respuesta de la primera que sea de forma satisfactoria.
+Si es reject la ignora y devuelve el primer resolve.
+
+```javascript
+const promise1 = new Promise((resolve, reject)=>reject('Reject 1'));
+const promise2 = new Promise((resolve, reject)=>resolve('Resolve 2'));
+const promise3 = new Promise((resolve, reject)=>resolve('Resolve 3'));
+
+Promise.any([promise1, promise2, promise3])
+    .then(response => console.log(response));
+
+// Resolve 2
+```
+
+## at
+El método at() recibe un valor numérico entero y devuelve el elemento en esa posición, permitiendo valores positivos y negativos. Los valores negativos contarán desde el último elemento del array.
+Esto no sugiere que haya algo mal con usar la notación de corchetes. Por ejemplo, array[0] devolvería el primer elemento. Sin embargo, en lugar de usar array.length para los últimos elementos
+
+```javascript
+const array = ['one','two','tree', 'four'];
+
+console.log(array[array.length - 1]);
+// four 
+
+//-------------- usando at ------------------
+
+console.log(array.at(-1));
+// four
+```
